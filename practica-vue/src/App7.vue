@@ -1,6 +1,6 @@
 <script setup>
 // aca  importamo con lo que trabajaremos
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 // inicializamos la variable como reactiva
 let counter = ref(0);
@@ -21,20 +21,6 @@ const reset = () => {
   console.log("reset");
   counter.value = 0;
 };
-
-const classComputed = computed(() => {
-  if (counter.value === 0) {
-    return "zero";
-  }
-
-  if (counter.value > 0) {
-    return "active";
-  }
-
-  if (counter.value < 0) {
-    return "desactive";
-  }
-});
 </script>
 
 <template>
@@ -42,7 +28,7 @@ const classComputed = computed(() => {
 
   <!-- aca por defecto nos muestra el value -->
   <!-- agregamos los : para que sea reactivo  -->
-  <h2 :class="classComputed">{{ counter }}</h2>
+  <h2 :class="counter > 0 ? 'active' : 'desactive'">{{ counter }}</h2>
   <button v-on:click="increment">Incrementar</button>
   <button v-on:click="decrement">decrementando</button>
   <button v-on:click="reset">reset</button>
@@ -59,9 +45,5 @@ h1 {
 
 .desactive {
   color: red;
-}
-
-.zero {
-  color: peru;
 }
 </style>
