@@ -5,23 +5,34 @@ import { ref, computed } from "vue";
 // inicializamos la variable como reactiva
 let counter = ref(0);
 
+let arrayFavoritos = ref([]);
+
 const increment = () => {
-  console.log("incrementando");
   // debemos trabajar con value, porque se vuelve un objeto
   counter.value++;
 };
 
 const decrement = () => {
-  console.log("decrementando");
   // debemos trabajar con value, porque se vuelve un objeto
   counter.value--;
 };
 
 const reset = () => {
-  console.log("reset");
   counter.value = 0;
 };
 
+const add = () => {
+  arrayFavoritos.value.push(counter.value);
+};
+
+const bloquearBtn = computed(() => {
+  const numSearch = arrayFavoritos.value.find((num) => num === counter.value);
+  console.log(numSearch);
+  if (numSearch === 0) return true;
+  return numSearch ? true : false;
+});
+
+// con el computado podemos medir varias opciones, y podemos hacerlo asincrono
 const classComputed = computed(() => {
   if (counter.value === 0) {
     return "zero";
@@ -40,12 +51,17 @@ const classComputed = computed(() => {
 <template>
   <h1>hello word</h1>
 
-  <!-- aca por defecto nos muestra el value -->
-  <!-- agregamos los : para que sea reactivo  -->
   <h2 :class="classComputed">{{ counter }}</h2>
   <button v-on:click="increment">Incrementar</button>
   <button v-on:click="decrement">decrementando</button>
   <button v-on:click="reset">reset</button>
+  <button v-on:click="add" :disabled="bloquearBtn">add</button>
+  <br />
+  <ul>
+    <li v-for="(num, index) in arrayFavoritos" :key="index">
+      {{ num }}
+    </li>
+  </ul>
 </template>
 
 <style>
